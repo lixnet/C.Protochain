@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\C.Protochain.Entities\C.Protochain.Entities.csproj" />
+    <ProjectReference Include="..\C.Protochain.Store\C.Protochain.Store.csproj" />
+  </ItemGroup>
+
+</Project>
