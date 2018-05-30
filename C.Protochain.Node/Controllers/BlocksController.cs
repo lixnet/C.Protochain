@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using C.Protochain.Business;
 using C.Protochain.Entities;
-using C.Protochain.Http.Models;
+using C.Protochain.Node.Models;
 using C.Protochain.Store;
 using Microsoft.AspNetCore.Mvc;
 
-namespace C.Protochain.Http.Controllers
+namespace C.Protochain.Node.Controllers
 {
     [Route("api/[controller]")]
     public class BlocksController : Controller

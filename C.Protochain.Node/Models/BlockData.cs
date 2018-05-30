@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace C.Protochain.Http.Models
+﻿namespace C.Protochain.Node.Models
 {
     public class BlockData
     {

@@ -27,7 +27,7 @@ namespace C.Protochain.Business
                                              UnspentTransactionOut[] unspentTransactionsOut)
         {
             TransactionIn transactionIn = transaction.TransactionsIn[transactionInIndex];
-            string dataToSign = transaction.Id;            
+            string dataToSign = transaction.Id;
       
             UnspentTransactionOut refUnspentTransaction = FindUnspentTxOut(transactionIn.TransactionOutId, transactionIn.TransactionOutIndex, unspentTransactionsOut).FirstOrDefault();
             if (refUnspentTransaction == null)
@@ -38,13 +38,15 @@ namespace C.Protochain.Business
             // Verify that the public key generated with the private key == referencedAddress, if false throw;
 
             string signature64;
-            using (ECDsaCng dsa = new ECDsaCng())
+            byte[] privateKeyBytes = Encoding.UTF8.GetBytes(privateKey);
+            var publicKey = CngKey.Import(privateKeyBytes, CngKeyBlobFormat.EccFullPrivateBlob);
+
+            using (ECDsaCng dsa = new ECDsaCng(publicKey))
             {
-                byte[] privateKeyBytes = Encoding.UTF8.GetBytes(privateKey);
                 byte[] dataAsBytes = Encoding.UTF8.GetBytes(dataToSign);
 
-                CngProperty prop = new CngProperty("privateKey", privateKeyBytes, CngPropertyOptions.None);
-                dsa.Key.SetProperty(prop);
+                //CngProperty prop = new CngProperty("privateKey", privateKeyBytes, CngPropertyOptions.None);
+                //dsa.Key.SetProperty(prop);
                 byte[] signature = dsa.SignData(dataAsBytes);
                 signature64 = Convert.ToBase64String(signature);
             }
@@ -96,7 +98,7 @@ namespace C.Protochain.Business
                 return false;
 
             return transaction.TransactionsOut[0].Amount == CoinbaseAmount;
-        }        
+        }
 
         private static bool ValidateTransactionIns(TransactionIn txIn, Transaction transaction, UnspentTransactionOut[] unspentTxsOut)
         {
@@ -105,13 +107,14 @@ namespace C.Protochain.Business
                 return false;
 
             var address = referencedUTxOut.Address;
-            using (ECDsaCng dsa = new ECDsaCng())
+            byte[] signature64 = Convert.FromBase64String(txIn.Signature);
+            var publicKey = CngKey.Import(signature64, CngKeyBlobFormat.EccFullPublicBlob);
+            using (ECDsaCng dsa = new ECDsaCng(publicKey))
             {
-                byte[] publicKeyBytes = Encoding.UTF8.GetBytes(address);
-                byte[] signature64 = Convert.FromBase64String(txIn.Signature);
-
-                if (!dsa.VerifyData(publicKeyBytes, signature64))
-                    return false;                
+                byte[] transactionIdBytes = Encoding.UTF8.GetBytes(transaction.Id);
+                
+                if (!dsa.VerifyData(transactionIdBytes, signature64))
+                    return false;
             }
 
             return true;
