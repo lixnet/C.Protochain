@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace C.Protochain.Http
+namespace C.Protochain.Node
 {
     public class Program
     {

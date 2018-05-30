@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.Cng" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\C.Protochain.Entities\C.Protochain.Entities.csproj" />
     <ProjectReference Include="..\C.Protochain.Store\C.Protochain.Store.csproj" />
   </ItemGroup>

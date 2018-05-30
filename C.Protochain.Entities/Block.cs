@@ -23,9 +23,7 @@ namespace C.Protochain.Entities
         public string Hash { get; }
         public long Timestamp { get; }
         public string Data { get; }
-
         public long Nonce = -1;
-
         public string Mine()
         {            
             string hash = string.Empty;
